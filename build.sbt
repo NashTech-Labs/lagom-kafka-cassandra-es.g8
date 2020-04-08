@@ -8,8 +8,8 @@ val macwire = "com.softwaremill.macwire" %% "macros" % "2.3.3" % "provided"
 val scalaTest = "org.scalatest" %% "scalatest" % "3.1.1" % Test
 val elasticSearch = "org.elasticsearch" % "elasticsearch" % "7.6.2"
 val elasticSearchClient ="org.elasticsearch.client" % "elasticsearch-rest-high-level-client" % "7.6.2"
-val elastic = "com.lightbend.akka" %% "akka-stream-alpakka-elasticsearch" % "2.0.0-RC2"
-
+val alpakkaElastic = "com.lightbend.akka" %% "akka-stream-alpakka-elasticsearch" % "2.0.0-RC2"
+val alpakkaKafka =  "com.typesafe.akka" %% "akka-stream-kafka" % "2.0.2"
 
 val commonLagomAPISettings = libraryDependencies ++= Seq(
   lagomScaladslApi
@@ -23,7 +23,8 @@ val commonLagomImplSettings = libraryDependencies ++= Seq(
   scalaTest,
   elasticSearch,
   elasticSearchClient,
-  elastic
+  alpakkaElastic,
+  alpakkaKafka
 )
 
 
@@ -52,3 +53,4 @@ lazy val `lagom-kafka-cassandra-es-impl` = (project in file("lagom-kafka-cassand
 
 lagomCassandraEnabled in ThisBuild := false
 lagomUnmanagedServices in ThisBuild := Map("cas_native" -> "http://localhost:9042")
+lagomKafkaEnabled in ThisBuild := false

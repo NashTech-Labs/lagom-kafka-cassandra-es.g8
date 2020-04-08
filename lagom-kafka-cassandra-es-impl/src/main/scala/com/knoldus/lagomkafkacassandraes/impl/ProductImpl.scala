@@ -2,18 +2,21 @@ package com.knoldus.lagomkafkacassandraes.impl
 
 import akka.util.Timeout
 import akka.{Done, NotUsed}
-import com.knoldus.ProductCommands
+import com.knoldus.{Events, ProductCommands}
 import com.knoldus.constants.Queries
 import com.knoldus.lagomkafkacassandraes.api.{Product, ProductApi}
 import com.knoldus.lagomkafkacassandraes.impl.eventsourcing.ProductEntity
 import com.knoldus.lagomkafkacassandraes.impl.eventsourcing.commands.AddProduct
+import com.knoldus.lagomkafkacassandraes.impl.eventsourcing.events.ProductAdded
 import com.lightbend.lagom.scaladsl.api.ServiceCall
+import com.lightbend.lagom.scaladsl.api.broker.Topic
+import com.lightbend.lagom.scaladsl.broker.TopicProducer
 import com.lightbend.lagom.scaladsl.persistence.cassandra.CassandraSession
-import com.lightbend.lagom.scaladsl.persistence.{PersistentEntityRef, PersistentEntityRegistry}
+import com.lightbend.lagom.scaladsl.persistence.{EventStreamElement, PersistentEntityRef, PersistentEntityRegistry}
 
 import scala.concurrent.duration._
 import scala.concurrent.{ExecutionContext, Future}
-
+import org.slf4j.{ Logger, LoggerFactory }
 /**
   * Implementation of the ProductApi
   */
