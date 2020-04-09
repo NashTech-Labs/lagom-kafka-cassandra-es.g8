@@ -8,7 +8,7 @@ scalaVersion in ThisBuild := "2.13.0"
 //"org.elasticsearch.client" % "elasticsearch-rest-client" % "7.6.2"
 val macwire = "com.softwaremill.macwire" %% "macros" % "2.3.3" % "provided"
 val scalaTest = "org.scalatest" %% "scalatest" % "3.1.1" % Test
-val elasticSearchClient = "org.elasticsearch.client" % "rest" % "6.0.0-alpha2"
+//val elasticSearchClient = "org.elasticsearch.client" % "rest" % "6.0.0-alpha2"
 val alpakkaElastic = "com.lightbend.akka" %% "akka-stream-alpakka-elasticsearch" % "2.0.0-RC2"
 val alpakkaKafka =  "com.typesafe.akka" %% "akka-stream-kafka" % "2.0.2"
 
@@ -23,7 +23,7 @@ val commonLagomImplSettings = libraryDependencies ++= Seq(
   macwire,
   scalaTest,
  // elasticSearch,
-  elasticSearchClient,
+ // elasticSearchClient,
   alpakkaElastic,
   alpakkaKafka
 )

@@ -1,6 +1,6 @@
 package com.knoldus.lagomkafkacassandraes.impl.kafka
 
-import akka.Done
+import akka.{Done, NotUsed}
 import akka.stream.alpakka.elasticsearch.WriteMessage
 import akka.stream.scaladsl.Flow
 import com.knoldus.lagomkafkacassandraes.api.{Product, ProductKafkaApi}
@@ -17,11 +17,11 @@ class ProductServiceFlow(registry: PersistentEntityRegistry)(implicit ec: Execut
 //       AddProduct(product)
 //      }.map(_ => product)
 //  }
-  val productTopicDetailsFlow = Flow[Product].map { x =>
-    println(s"\n\n$x\n\n")
-    x
-  }.map(r => Product(r.id, r.name, r.quantity))
-    .map(a => WriteMessage.createIndexMessage(a.id, a)).via(ElasticClient.esSink).map { messageResults =>
+  val productTopicDetailsFlow: Flow[Product, Done.type, NotUsed] = Flow[Product].map { product =>
+    println(s"\n\n$product\n\n")
+  product
+  }.map(product => Product(product.id, product.name, product.quantity))
+    .map(product => WriteMessage.createIndexMessage(product.id, product)).via(ElasticClient.esSink).map { messageResults =>
     if (!messageResults.success) {
       //      log.error(s"Error writing $docType objects to $esIndex: ${result.error.getOrElse("")}")
       throw new Exception(s"Failed to write to ES")
