@@ -31,7 +31,10 @@ class ProductServiceFlow(registry: PersistentEntityRegistry,productKafkaOuterApi
 //    Done
 //  }
   val productTopicDetailsFlow: Flow[Product, Done.type, NotUsed] = Flow[Product]
-    .via(productDetailsFlow).map(_ => productKafkaOuterApi.productDetailsTopic).map(_=> Done)
+    .via(productDetailsFlow).map { product =>
+      println(s"\n\n$product\n\n")
+    product
+    }.map(product => Product(product.id, product.name, product.quantity)).map(_ => productKafkaOuterApi.productDetailsTopic).map(_=> Done)
 ////val productToEsFlow : Sink[Product, NotUsed]= Flow[Product]
 ////  .via(productDetailsFlow)
 ////  .via(ElasticClient.flow)
