@@ -55,3 +55,4 @@ lazy val `lagom-kafka-cassandra-es-impl` = (project in file("lagom-kafka-cassand
 lagomCassandraEnabled in ThisBuild := false
 lagomUnmanagedServices in ThisBuild := Map("cas_native" -> "http://localhost:9042")
 lagomKafkaEnabled in ThisBuild := false
+lagomUnmanagedServices in ThisBuild += ("elastic-search" -> "http://127.0.0.1:9200")

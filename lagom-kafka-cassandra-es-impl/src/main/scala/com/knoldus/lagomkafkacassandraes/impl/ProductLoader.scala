@@ -1,6 +1,7 @@
 package com.knoldus.lagomkafkacassandraes.impl
 
 import com.knoldus.lagomkafkacassandraes.api.{ProductApi, ProductKafkaApi}
+import com.knoldus.lagomkafkacassandraes.impl.elasticSearch.ElasticClient
 import com.knoldus.lagomkafkacassandraes.impl.eventsourcing.{ProductEntity, ProductReadSideProcessor, ProductSerializerRegistry}
 import com.knoldus.lagomkafkacassandraes.impl.kafka.{ProductServiceFlow, TopicSubscriber}
 import com.lightbend.lagom.scaladsl.api.ServiceLocator.NoServiceLocator
@@ -39,7 +40,7 @@ abstract class ProductApplication(context: LagomApplicationContext)
   lazy val productKafkaApi: ProductKafkaApi = serviceClient.implement[ProductKafkaApi]
  // lazy val productKafkaOuterApi:ProductKafkaOuterApi = serviceClient.implement[ProductKafkaOuterApi]
 
-  cluster.registerOnMemberUp(wire[TopicSubscriber])
+ wire[TopicSubscriber]
   // Register the JSON serializer registry
   override lazy val jsonSerializerRegistry: JsonSerializerRegistry = ProductSerializerRegistry
   //Register the persistent entity
