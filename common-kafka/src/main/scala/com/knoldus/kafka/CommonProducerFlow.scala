@@ -1,6 +1,6 @@
-//package com.knoldus.kafka
-//
-//import akka.actor.ActorSystem
+package com.knoldus.kafka
+
+import akka.actor.ActorSystem
 //import akka.kafka.ProducerSettings
 //import akka.kafka.scaladsl.Producer
 //import org.apache.kafka.common.serialization.{ByteArraySerializer, StringSerializer}
