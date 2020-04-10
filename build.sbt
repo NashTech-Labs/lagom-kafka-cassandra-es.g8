@@ -30,19 +30,19 @@ val commonLagomImplSettings = libraryDependencies ++= Seq(
 
 
 lazy val `lagom-kafka-cassandra-es` = (project in file("."))
-  .aggregate(`lagom-kafka-cassandra-es-api`, `lagom-kafka-cassandra-es-impl`, `common-kafka`, `common-lagom`)
+  .aggregate(`lagom-kafka-cassandra-es-api`, `lagom-kafka-cassandra-es-impl`, `common-lagom`)
 
 lazy val `common-lagom` = (project in file("common-lagom"))
   .settings(commonLagomAPISettings: _*)
   .settings(commonLagomImplSettings: _*)
 
-lazy val `common-kafka` = (project in file("common-kafka"))
-  .settings(commonLagomAPISettings:_*)
-  .settings(commonLagomImplSettings:_*)
+//lazy val `common-kafka` = (project in file("common-kafka"))
+//  .settings(commonLagomAPISettings:_*)
+//  .settings(commonLagomImplSettings:_*)
 
 lazy val `lagom-kafka-cassandra-es-api` = (project in file("lagom-kafka-cassandra-es-api"))
   .settings(commonLagomAPISettings: _*)
-  .dependsOn(`common-kafka`)
+//  .dependsOn(`common-kafka`)
 
 
 lazy val `lagom-kafka-cassandra-es-impl` = (project in file("lagom-kafka-cassandra-es-impl"))
