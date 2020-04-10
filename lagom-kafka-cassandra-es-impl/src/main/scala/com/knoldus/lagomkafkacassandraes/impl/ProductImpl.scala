@@ -48,6 +48,17 @@ class ProductImpl(
     }
   }
 
+  private val log: Logger = LoggerFactory.getLogger(getClass)
+
+  override def productDetailsTopic: Topic[Product] = TopicProducer.taggedStreamWithOffset(Events.Tag.allTags.toList) { (tag, offset) =>
+    persistentEntityRegistry.eventStream(tag, offset)
+      .collect {
+        case EventStreamElement(_,ProductAdded(product), pOffset) =>
+          log.debug(s"Writing product: ${product.name} to kafka")
+          Product(product.id,product.name,product.quantity) -> pOffset
+      }
+  }
+
   def ref(id: String): PersistentEntityRef[ProductCommands[_]] = {
     persistentEntityRegistry
       .refFor[ProductEntity](id)

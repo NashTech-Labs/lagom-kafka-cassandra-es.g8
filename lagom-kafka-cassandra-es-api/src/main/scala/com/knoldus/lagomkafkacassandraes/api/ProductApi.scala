@@ -7,7 +7,7 @@ import com.lightbend.lagom.scaladsl.api.transport.Method
 import com.lightbend.lagom.scaladsl.api.{Descriptor, Service, ServiceCall}
 
 trait ProductApi extends Service {
-
+  def productDetailsTopic: Topic[Product]
   def getProductDetails(id: String): ServiceCall[NotUsed, String]
 
   def addProduct(): ServiceCall[Product, String]
@@ -20,5 +20,8 @@ trait ProductApi extends Service {
         restCall(Method.GET, "/api/details/get/:id", getProductDetails _),
         restCall(Method.POST, "/api/details/add/:id/:name/:quantity", addProduct _),
     ).withAutoAcl(true)
+      .withTopics(
+          topic("productInfo", productDetailsTopic _)
+            .addProperty(KafkaProperties.partitionKeyStrategy, PartitionKeyStrategy[Product](_.id)))
   }
 }

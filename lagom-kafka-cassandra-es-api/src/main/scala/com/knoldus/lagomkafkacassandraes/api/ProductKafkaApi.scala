@@ -13,7 +13,7 @@ trait ProductKafkaApi extends Service {
     import Service._
 
     named("ProductDetailsKafka").withTopics(
-      topic("product", productTopic _)
+      topic("prod", productTopic _)
         .addProperty(KafkaProperties.partitionKeyStrategy, PartitionKeyStrategy[Product](_.id))
     )
   }
