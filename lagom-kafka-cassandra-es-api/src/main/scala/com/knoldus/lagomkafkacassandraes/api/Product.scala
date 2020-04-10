@@ -3,7 +3,7 @@ package com.knoldus.lagomkafkacassandraes.api
 import play.api.libs.json.{Format, Json}
 
 /**
-  *
+  * case class of Product
   * @param id    - The product id
   * @param name  - The product name
   */

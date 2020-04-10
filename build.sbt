@@ -32,8 +32,7 @@ lazy val `common-lagom` = (project in file("common-lagom"))
 
 lazy val `lagom-kafka-cassandra-es-api` = (project in file("lagom-kafka-cassandra-es-api"))
   .settings(commonLagomAPISettings: _*)
-
-
+  .dependsOn(`common-lagom`)
 
 lazy val `lagom-kafka-cassandra-es-impl` = (project in file("lagom-kafka-cassandra-es-impl"))
   .enablePlugins(LagomScala)
