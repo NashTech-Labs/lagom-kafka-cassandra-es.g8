@@ -1,17 +1,12 @@
 package com.knoldus.lagomkafkacassandraes.api
 
 import akka.NotUsed
-import com.knoldus.constants.Constants
 import com.lightbend.lagom.scaladsl.api.broker.Topic
 import com.lightbend.lagom.scaladsl.api.broker.kafka.{KafkaProperties, PartitionKeyStrategy}
 import com.lightbend.lagom.scaladsl.api.transport.Method
 import com.lightbend.lagom.scaladsl.api.{Descriptor, Service, ServiceCall}
 
-/**
-  * a service api
-  */
 trait ProductApi extends Service {
-
   def productDetailsTopic: Topic[Product]
   def getProductDetails(id: String): ServiceCall[NotUsed, String]
 
@@ -26,7 +21,7 @@ trait ProductApi extends Service {
         restCall(Method.POST, "/api/details/add/:id/:name/:quantity", addProduct _),
     ).withAutoAcl(true)
       .withTopics(
-          topic(Constants.OUTPUT_TOPIC, productDetailsTopic _)
+          topic("productInfo", productDetailsTopic _)
             .addProperty(KafkaProperties.partitionKeyStrategy, PartitionKeyStrategy[Product](_.id)))
   }
 }

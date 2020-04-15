@@ -2,9 +2,6 @@ package com.knoldus.constants
 
 import com.typesafe.config.{Config, ConfigFactory}
 
-/**
-  * Queries to query the database
-  */
 object Queries {
 
   val config: Config = ConfigFactory.load()
