@@ -50,7 +50,7 @@ object ElasticClient {
       .withGroupId("akka-stream-kafka")
       .withProperty(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest")
   val kafkaSource: Source[ConsumerRecord[Array[Byte], String], Consumer.Control] =
-    Consumer.plainSource(consumerSettings, Subscriptions.topics("product"))
+    Consumer.plainSource(consumerSettings, Subscriptions.topics("prod"))
 
 
   def kafkaToEs(): Future[Done] =
