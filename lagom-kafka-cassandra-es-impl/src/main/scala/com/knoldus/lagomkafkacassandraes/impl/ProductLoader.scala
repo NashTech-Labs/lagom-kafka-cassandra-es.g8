@@ -37,9 +37,7 @@ abstract class ProductApplication(context: LagomApplicationContext)
   lazy val productServiceFlow: ProductServiceFlow = wire[ProductServiceFlow]
 
   lazy val productKafkaApi: ProductKafkaApi = serviceClient.implement[ProductKafkaApi]
- // lazy val productKafkaOuterApi:ProductKafkaOuterApi = serviceClient.implement[ProductKafkaOuterApi]
-
- wire[TopicSubscriber]
+  wire[TopicSubscriber]
   // Register the JSON serializer registry
   override lazy val jsonSerializerRegistry: JsonSerializerRegistry = ProductSerializerRegistry
   //Register the persistent entity

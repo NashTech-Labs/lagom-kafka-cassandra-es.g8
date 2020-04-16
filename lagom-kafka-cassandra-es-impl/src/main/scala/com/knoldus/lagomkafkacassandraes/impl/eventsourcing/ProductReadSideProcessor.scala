@@ -1,4 +1,5 @@
 package com.knoldus.lagomkafkacassandraes.impl.eventsourcing
+
 import com.knoldus.lagomkafkacassandraes.api.Product
 import akka.Done
 import com.datastax.driver.core.{BoundStatement, PreparedStatement}
@@ -10,7 +11,8 @@ import com.lightbend.lagom.scaladsl.persistence.cassandra.{CassandraReadSide, Ca
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class ProductReadSideProcessor(cassandraSession: CassandraSession, readSide: CassandraReadSide)(implicit ec: ExecutionContext) extends ReadSideProcessor[Events] {
+class ProductReadSideProcessor(cassandraSession: CassandraSession, readSide: CassandraReadSide)
+                              (implicit ec: ExecutionContext) extends ReadSideProcessor[Events] {
   var addEntity: PreparedStatement = _
 
   override def aggregateTags: Set[AggregateEventTag[Events]] =
@@ -27,13 +29,15 @@ class ProductReadSideProcessor(cassandraSession: CassandraSession, readSide: Cas
     cassandraSession.executeCreateTable(Queries.CREATE_TABLE
       .stripMargin)
   }
+
   def prepareStatements(): Future[Done] =
-    for{
+    for {
       productPreparedStatement <- cassandraSession.prepare(Queries.INSERT_PRODUCT)
-    } yield{
+    } yield {
       addEntity = productPreparedStatement
       Done
     }
+
   def addEntity(product: Product): Future[List[BoundStatement]] = {
     val bindInsertProduct: BoundStatement = addEntity.bind()
     bindInsertProduct.setString("id", product.id)

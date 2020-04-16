@@ -16,7 +16,8 @@ import com.lightbend.lagom.scaladsl.persistence.{EventStreamElement, PersistentE
 
 import scala.concurrent.duration._
 import scala.concurrent.{ExecutionContext, Future}
-import org.slf4j.{ Logger, LoggerFactory }
+import org.slf4j.{Logger, LoggerFactory}
+
 /**
   * Implementation of the ProductApi
   */
@@ -25,6 +26,7 @@ class ProductImpl(
                  )(implicit ec: ExecutionContext)
   extends ProductApi {
 
+  private val log: Logger = LoggerFactory.getLogger(getClass)
   implicit val timeout: Timeout = Timeout(5.seconds)
 
   override def getProductDetails(id: String): ServiceCall[NotUsed, String] = ServiceCall { _ =>
@@ -32,7 +34,7 @@ class ProductImpl(
   }
 
   def getProductById(id: String): Future[Option[Product]] =
-    session.selectOne(Queries.GET_PRODUCT,id).map { rows =>
+    session.selectOne(Queries.GET_PRODUCT, id).map { rows =>
       rows.map { row =>
         val id = row.getString("id")
         val name = row.getString("name")
@@ -48,20 +50,19 @@ class ProductImpl(
     }
   }
 
-  private val log: Logger = LoggerFactory.getLogger(getClass)
-
-  override def productDetailsTopic: Topic[Product] = TopicProducer.taggedStreamWithOffset(Events.Tag.allTags.toList) { (tag, offset) =>
-    persistentEntityRegistry.eventStream(tag, offset)
-      .collect {
-        case EventStreamElement(_,ProductAdded(product), pOffset) =>
-          log.debug(s"Writing product: ${product.name} to kafka")
-          Product(product.id,product.name,product.quantity) -> pOffset
-      }
-  }
-
   def ref(id: String): PersistentEntityRef[ProductCommands[_]] = {
     persistentEntityRegistry
       .refFor[ProductEntity](id)
+  }
+
+  override def productDetailsTopic: Topic[Product] = TopicProducer.taggedStreamWithOffset(Events.Tag.allTags.toList)
+  { (tag, offset) =>
+    persistentEntityRegistry.eventStream(tag, offset)
+      .collect {
+        case EventStreamElement(_, ProductAdded(product), pOffset) =>
+          log.debug(s"Writing product: ${product.name} to kafka")
+          Product(product.id, product.name, product.quantity) -> pOffset
+      }
   }
 
 }
